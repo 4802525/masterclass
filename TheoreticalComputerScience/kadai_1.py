@@ -1,6 +1,6 @@
 #/usr/bin/python
 #coding: UTF-8
-
+#python kadai_1.py 1 1 1 1.0 0.9
 import numpy as np
 import sys
 

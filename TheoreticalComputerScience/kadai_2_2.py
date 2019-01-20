@@ -1,5 +1,6 @@
 #/usr/bin/python
 #coding: UTF-8 #python kadai_1.py 1 1 1 1.0 0.9
+#python kadai_2_2.py -0.5 1000
 import numpy as np
 import sys
 import random as rand
