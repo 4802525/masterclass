@@ -23,25 +23,17 @@ class Subbox{
 
   int nsubbox;
   int np;
-  int *np_sub;
-  int *p;
   int *next_p;
-  
+  list<int> *pid_sub;
   Subbox( const int _nsubbox, const int _np) : nsubbox(_nsubbox), np(_np){
     int nsubbox_total = nsubbox * nsubbox * nsubbox;
-    p = new int[nsubbox_total];
-    np_sub = new int[nsubbox_total];
     next_p = new int[np];
-    for( int i=0; i<nsubbox_total; i++){
-      p[i] = -1;
-      np_sub[i] = 0;
-    }
+    pid_sub = new list<int>[nsubbox_total];
   }
 
   ~Subbox(){
-    delete [] p;
-    delete [] np_sub;
     delete [] next_p;
+    delete [] pid_sub;
   }
 
   int getSubboxIndex( const int ix, const int iy, const int iz){
@@ -53,37 +45,33 @@ class Subbox{
       next_p[i] = getSubboxIndex((int)(x[i][0] * nsubbox),
           (int)(x[i][1] * nsubbox),
           (int)(x[i][2] * nsubbox));
+      pid_sub[next_p[i]].push_back(i);
     }
   }
 
-  int getParticle( const double (*xin)[3], int *pid,
+  int getParticle( const double (*xin)[3], list<int> &pid,
        const int ix, const int iy, const int iz){
-    int count = 0;
-    for( int i=0; i<np; i++){
-      if(next_p[i] == getSubboxIndex(ix,iy,iz)){
-        pid[count] = i;
-        count++;
-      }
-    }
-    return count;
+    pid = pid_sub[getSubboxIndex(ix,iy,iz)];
+    return pid.size();
   }
   
-  int getParticle2( const double (*xin)[3], int *pid,
+  int getParticle2( const double (*xin)[3], list<int> &pid,
         const int ix, const int iy, const int iz){
     int count = 0;
     int dx[] = {-1,0,1};
     int dy[] = {-1,0,1};
     int dz[] = {-1,0,1};
-    for( int i=0; i<np; i++){
-      for( int j=0; j<27; j++){
-        if(next_p[i] == getSubboxIndex(ix+dx[j/9],iy+dy[(j/3)%3],iz+dz[j%3])){
-          pid[count] = i;
-          count++;
-          break;
-        }
-      }
+    list<int> l;
+    for( int j=0; j<27; j++){
+      if(ix+dx[j/9] >=0 && ix+dx[j/9] < nsubbox &&
+          iy+dy[(j/3)%3] >=0 && iy+dy[(j/3)%3]< nsubbox &&
+          iz+dz[j%3] >=0 && iz+dz[j%3] < nsubbox){
+        list<int> v = pid_sub[getSubboxIndex(ix+dx[j/9],iy+dy[(j/3)%3],iz+dz[j%3])];
+        l.splice(l.end(),v);
+      } 
     }
-    return count;
+    pid = l;
+    return pid.size();
   }
 
 };
@@ -129,20 +117,22 @@ void init3( double (*x)[3], const int n){
 }
 
 void lj( double (*x)[3], double *p, 
-   const int *pid_i, const int ni,
-   const int *pid_j, const int nj){
+   list<int> &pid_i, const int ni,
+   list<int> &pid_j, const int nj){
 
-  for(int i=0; i<ni; i++){
-    for(int j=0; j<nj; j++){
-      if(pid_i[i] == pid_j[j])continue;
+  for(list<int>::iterator  it_i = pid_i.begin(); it_i != pid_i.end(); it_i++){
+    const int i = *it_i;
+    for(list<int>::iterator it_j = pid_j.begin(); it_j != pid_j.end(); it_j++){
+      const int j = *it_j;
+      if(i == j)continue;
       double r2 = 0;
-      for(int k=0; k<3; k++) r2 += pow(x[pid_i[i]][k] - x[pid_j[j]][k],2.0);
+      for(int k=0; k<3; k++) r2 += pow(x[i][k] - x[j][k],2.0);
       if(r2>=rcut2)continue;
       double rinv2 = sigma2/r2;
       double rinv6 = rinv2*rinv2*rinv2;
       double rinv12 = rinv6*rinv6;
       double u = 4.0*eps*(rinv12 - rinv6);
-      p[pid_i[i]] += u;
+      p[i] += u;
     }
   }
 }
@@ -156,7 +146,7 @@ int main( int argc, char **argv){
   int schmode;
   int randseed;
   int chunksize;
-  //cerr << "[n nsubbox nthreads initmode[0,1] schmode[0,1] chunksize randseed[1-10]]" << endl;
+  cerr << "[n nsubbox nthreads initmode[0,1] schmode[0,1] chunksize randseed[1-10]]" << endl;
   cin >> n >> nsubbox >> nthreads >> initmode >> schmode >> chunksize >> randseed;
 // cerr << n << "\t" << nsubbox << "\t"
 //   << nthreads << "\t" << initmode << "\t"
@@ -165,8 +155,6 @@ int main( int argc, char **argv){
 
   double (*x)[3] = new double[n][3];  // 粒子の位置
   double *p = new double[n];  // 粒子のポテンシャル
-  int pid_i[nthreads][n]; //格子内のindex
-  int pid_j[nthreads][n]; //周辺格子内のindex
 
   omp_set_num_threads(nthreads);
 
@@ -186,21 +174,21 @@ int main( int argc, char **argv){
     #pragma omp parallel for schedule( static, chunksize )
     for( int id=0; id<nsubbox3; id++){
       int i = id/nsubbox2, j = (id/nsubbox)%nsubbox, k = id%nsubbox;
-      int t_num = omp_get_thread_num();
-      int ni = subbox->getParticle( x, pid_i[t_num], i, j, k);
-      int nj = subbox->getParticle2( x, pid_j[t_num], i, j, k);
-      //cerr << ni << "\t" << nj << endl;
-      lj( x, p, pid_i[t_num], ni, pid_j[t_num], nj);
+      list<int> &pid_i = *new list<int>(), &pid_j = *new list<int>();
+      int ni = subbox->getParticle( x, pid_i, i, j, k);
+      int nj = subbox->getParticle2( x, pid_j, i, j, k);
+      //cerr << id << "\t" <<  ni << "\t" << nj << endl;
+      lj( x, p, pid_i, ni, pid_j, nj);
     }
   }else{
-    #pragma omp parallel for schedule( dynamic, chunksize)
+    #pragma omp parallel for schedule( static, chunksize )
     for( int id=0; id<nsubbox3; id++){
       int i = id/nsubbox2, j = (id/nsubbox)%nsubbox, k = id%nsubbox;
-      int t_num = omp_get_thread_num();
-      int ni = subbox->getParticle( x, pid_i[t_num], i, j, k);
-      int nj = subbox->getParticle2( x, pid_j[t_num], i, j, k);
-      //cerr << ni << "\t" << nj << endl;
-      lj( x, p, pid_i[t_num], ni, pid_j[t_num], nj);
+      list<int> &pid_i = *new list<int>(), &pid_j = *new list<int>();
+      int ni = subbox->getParticle( x, pid_i, i, j, k);
+      int nj = subbox->getParticle2( x, pid_j, i, j, k);
+      //cerr << id << "\t" <<  ni << "\t" << nj << endl;
+      lj( x, p, pid_i, ni, pid_j, nj);
     }
   }
   double t = getTime( &nowtime);
