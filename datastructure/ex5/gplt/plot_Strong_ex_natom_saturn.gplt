@@ -1,0 +1,30 @@
+# gnuplot script file
+
+# use grid when drawing a graph
+set grid
+
+# set legend position
+set key below
+
+# set xlabel and ylabel
+set logscale y
+set logscale x
+set yrange[0.001:50]
+set xlabel '#atom'
+set ylabel 'T(sec)'
+
+# output eps file by setting output to eps and then plot a figure.
+# font size is 28
+set term postscript eps enhanced "Helvetica" 28
+set output '../eps_saturn/Strong_ex_natom_init0.eps'
+plot "../result_saturn/natom/Strong_ex_init0_nsubbox02_natom.out" title "subbox 2" with linespoints, "../result_saturn/natom/Strong_ex_init0_nsubbox04_natom.out" title "subbox 4" with linespoints, "../result_saturn/natom/Strong_ex_init0_nsubbox06_natom.out" title "subbox 6" with linespoints, "../result_saturn/natom/Strong_ex_init0_nsubbox08_natom.out" title "subbox 8" with linespoints, "../result_saturn/natom/Strong_ex_init0_nsubbox10_natom.out" title "subbox 10" with linespoints
+
+set output '../eps_saturn/Strong_ex_natom_init1.eps'
+plot "../result_saturn/natom/Strong_ex_init1_nsubbox02_natom.out" title "subbox 2" with linespoints, "../result_saturn/natom/Strong_ex_init1_nsubbox04_natom.out" title "subbox 4" with linespoints, "../result_saturn/natom/Strong_ex_init1_nsubbox06_natom.out" title "subbox 6" with linespoints, "../result_saturn/natom/Strong_ex_init1_nsubbox08_natom.out" title "subbox 8" with linespoints, "../result_saturn/natom/Strong_ex_init1_nsubbox10_natom.out" title "subbox 10" with linespoints
+
+set output '../eps_saturn/Strong_ex_natom_init2.eps'
+plot "../result_saturn/natom/Strong_ex_init2_nsubbox02_natom.out" title "subbox 2" with linespoints, "../result_saturn/natom/Strong_ex_init2_nsubbox04_natom.out" title "subbox 4" with linespoints, "../result_saturn/natom/Strong_ex_init2_nsubbox06_natom.out" title "subbox 6" with linespoints, "../result_saturn/natom/Strong_ex_init2_nsubbox08_natom.out" title "subbox 8" with linespoints, "../result_saturn/natom/Strong_ex_init2_nsubbox10_natom.out" title "subbox 10" with linespoints
+
+# set back output to x11 
+set terminal x11
+
