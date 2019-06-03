@@ -146,7 +146,7 @@ int main( int argc, char **argv){
   int schmode;
   int randseed;
   int chunksize;
-  cerr << "[n nsubbox nthreads initmode[0,1] schmode[0,1] chunksize randseed[1-10]]" << endl;
+  //cerr << "[n nsubbox nthreads initmode[0,1] schmode[0,1] chunksize randseed[1-10]]" << endl;
   cin >> n >> nsubbox >> nthreads >> initmode >> schmode >> chunksize >> randseed;
 // cerr << n << "\t" << nsubbox << "\t"
 //   << nthreads << "\t" << initmode << "\t"
@@ -181,7 +181,7 @@ int main( int argc, char **argv){
       lj( x, p, pid_i, ni, pid_j, nj);
     }
   }else{
-    #pragma omp parallel for schedule( static, chunksize )
+    #pragma omp parallel for schedule( dynamic, chunksize )
     for( int id=0; id<nsubbox3; id++){
       int i = id/nsubbox2, j = (id/nsubbox)%nsubbox, k = id%nsubbox;
       list<int> &pid_i = *new list<int>(), &pid_j = *new list<int>();

@@ -18,33 +18,41 @@ set style fill solid
 filter(x,y)=int(x/y)*y
 
 set output '../eps_saturn/Strong_ex_randseed_init0_thread5.eps'
-plot "../result_saturn/randseed/Strong_ex_init0_thread5_seed.out" u (filter($2,0.01)):(1) smooth frequency with boxes lw 1 title "init 0, thread 5"
+plot "../result_saturn/randseed/Strong_ex_init0_thread5_seed.out" u (filter($2,0.002)):(1) smooth frequency with boxes lw 1 title "init 0, thread 5"
 
 set output '../eps_saturn/Strong_ex_randseed_init0_thread10.eps'
-plot "../result_saturn/randseed/Strong_ex_init0_thread10_seed.out" u (filter($2,0.005)):(1) smooth frequency with boxes lw 1 title "init 0, thread 10"
+plot "../result_saturn/randseed/Strong_ex_init0_thread10_seed.out" u (filter($2,0.001)):(1) smooth frequency with boxes lw 1 title "init 0, thread 10"
+
+set output '../eps_saturn/Strong_ex_randseed_init0_thread15.eps'
+plot "../result_saturn/randseed/Strong_ex_init0_thread15_seed.out" u (filter($2,0.001)):(1) smooth frequency with boxes lw 1 title "init 0, thread 15"
 
 set output '../eps_saturn/Strong_ex_randseed_init0_thread20.eps'
-plot "../result_saturn/randseed/Strong_ex_init0_thread20_seed.out" u (filter($2,0.002)):(1) smooth frequency with boxes lw 1 title "init 0, thread 20"
+plot "../result_saturn/randseed/Strong_ex_init0_thread20_seed.out" u (filter($2,0.001)):(1) smooth frequency with boxes lw 1 title "init 0, thread 20"
 
 set output '../eps_saturn/Strong_ex_randseed_init1_thread5.eps'
-plot "../result_saturn/randseed/Strong_ex_init1_thread5_seed.out" u (filter($2,0.01)):(1) smooth frequency with boxes lw 1 title "init 0, thread 5"
+plot "../result_saturn/randseed/Strong_ex_init1_thread5_seed.out" u (filter($2,0.005)):(1) smooth frequency with boxes lw 1 title "init 1, thread 5"
 
 set output '../eps_saturn/Strong_ex_randseed_init1_thread10.eps'
-plot "../result_saturn/randseed/Strong_ex_init1_thread10_seed.out" u (filter($2,0.005)):(1) smooth frequency with boxes lw 1 title "init 0, thread 10"
+plot "../result_saturn/randseed/Strong_ex_init1_thread10_seed.out" u (filter($2,0.005)):(1) smooth frequency with boxes lw 1 title "init 1, thread 10"
+
+set output '../eps_saturn/Strong_ex_randseed_init1_thread15.eps'
+plot "../result_saturn/randseed/Strong_ex_init1_thread15_seed.out" u (filter($2,0.01)):(1) smooth frequency with boxes lw 1 title "init 1, thread 15"
 
 set output '../eps_saturn/Strong_ex_randseed_init1_thread20.eps'
-plot "../result_saturn/randseed/Strong_ex_init1_thread20_seed.out" u (filter($2,0.002)):(1) smooth frequency with boxes lw 1 title "init 0, thread 20"
+plot "../result_saturn/randseed/Strong_ex_init1_thread20_seed.out" u (filter($2,0.01)):(1) smooth frequency with boxes lw 1 title "init 1, thread 20"
 
 set output '../eps_saturn/Strong_ex_randseed_init2_thread5.eps'
-plot "../result_saturn/randseed/Strong_ex_init2_thread5_seed.out" u (filter($2,0.01)):(1) smooth frequency with boxes lw 1 title "init 0, thread 5"
+plot "../result_saturn/randseed/Strong_ex_init2_thread5_seed.out" u (filter($2,0.01)):(1) smooth frequency with boxes lw 1 title "init 2, thread 5"
 
 set output '../eps_saturn/Strong_ex_randseed_init2_thread10.eps'
-plot "../result_saturn/randseed/Strong_ex_init2_thread10_seed.out" u (filter($2,0.005)):(1) smooth frequency with boxes lw 1 title "init 0, thread 10"
+plot "../result_saturn/randseed/Strong_ex_init2_thread10_seed.out" u (filter($2,0.01)):(1) smooth frequency with boxes lw 1 title "init 2, thread 10"
+
+set output '../eps_saturn/Strong_ex_randseed_init2_thread15.eps'
+plot "../result_saturn/randseed/Strong_ex_init2_thread15_seed.out" u (filter($2,0.03)):(1) smooth frequency with boxes lw 1 title "init 2, thread 15"
 
 set output '../eps_saturn/Strong_ex_randseed_init2_thread20.eps'
-plot "../result_saturn/randseed/Strong_ex_init2_thread20_seed.out" u (filter($2,0.002)):(1) smooth frequency with boxes lw 1 title "init 0, thread 20"
+plot "../result_saturn/randseed/Strong_ex_init2_thread20_seed.out" u (filter($2,0.03)):(1) smooth frequency with boxes lw 1 title "init 2, thread 20"
 
 
 # set back output to x11 
-set terminal x11
 

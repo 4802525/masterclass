@@ -11,13 +11,14 @@ set logscale y
 set logscale x
 set xlabel '#thread'
 set ylabel 'T(sec)'
-set yrange[0.1:100]
+set yrange[0.01:20]
 
 # output eps file by setting output to eps and then plot a figure.
 # font size is 28
 set term postscript eps enhanced "Helvetica" 28
 set output '../eps_saturn/Strong_ex_nsubbox_init0.eps'
 plot "../result_saturn/nsubbox/Strong_ex_init0_ndiv01.out" with linespoints title "ndiv 1", "../result_saturn/nsubbox/Strong_ex_init0_ndiv02.out" with linespoints title "ndiv 2", "../result_saturn/nsubbox/Strong_ex_init0_ndiv03.out" with linespoints title "ndiv 3", "../result_saturn/nsubbox/Strong_ex_init0_ndiv04.out" with linespoints title "ndiv 4", "../result_saturn/nsubbox/Strong_ex_init0_ndiv05.out" with linespoints title "ndiv 5", "../result_saturn/nsubbox/Strong_ex_init0_ndiv06.out" with linespoints title "ndiv 6", "../result_saturn/nsubbox/Strong_ex_init0_ndiv07.out" with linespoints title "ndiv 7", "../result_saturn/nsubbox/Strong_ex_init0_ndiv08.out" with linespoints title "ndiv 8", "../result_saturn/nsubbox/Strong_ex_init0_ndiv09.out" with linespoints title "ndiv 9", "../result_saturn/nsubbox/Strong_ex_init0_ndiv10.out" with linespoints title "ndiv 10"
+set yrange[0.1:20]
 
 set output '../eps_saturn/Strong_ex_nsubbox_init1.eps'
 plot "../result_saturn/nsubbox/Strong_ex_init1_ndiv01.out" with linespoints title "ndiv 1", "../result_saturn/nsubbox/Strong_ex_init1_ndiv02.out" with linespoints title "ndiv 2", "../result_saturn/nsubbox/Strong_ex_init1_ndiv03.out" with linespoints title "ndiv 3", "../result_saturn/nsubbox/Strong_ex_init1_ndiv04.out" with linespoints title "ndiv 4", "../result_saturn/nsubbox/Strong_ex_init1_ndiv05.out" with linespoints title "ndiv 5", "../result_saturn/nsubbox/Strong_ex_init1_ndiv06.out" with linespoints title "ndiv 6", "../result_saturn/nsubbox/Strong_ex_init1_ndiv07.out" with linespoints title "ndiv 7", "../result_saturn/nsubbox/Strong_ex_init1_ndiv08.out" with linespoints title "ndiv 8", "../result_saturn/nsubbox/Strong_ex_init1_ndiv09.out" with linespoints title "ndiv 9", "../result_saturn/nsubbox/Strong_ex_init1_ndiv10.out" with linespoints title "ndiv 10"

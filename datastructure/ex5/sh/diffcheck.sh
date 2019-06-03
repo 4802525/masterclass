@@ -6,33 +6,29 @@ n_thread=1
 nsubbox=10
 chunksize=1
 schmode=1
+#高速化前のlj O(n^2)
+g++ ../ex_test.cpp -o ../ex_test -fopenmp
+#高速化後のlj
 g++ ../ex.cpp -o ../ex -fopenmp
 
-echo check thread
-n_thread=1
-echo $n $nsubbox $n_thread $initmode $schmode $chunksize $randseed > inputfile
-../ex < inputfile 2> err1.out
-n_thread=4
-echo $n $nsubbox $n_thread $initmode $schmode $chunksize $randseed > inputfile
-../ex < inputfile 2> err2.out
-diff err1.out err2.out
-n_thread=20
-echo done thread
+echo $n $n_thread 0 > inputfile
+../ex_test < inputfile 2> err1.out
 
 echo check nsubbox
-nsubbox=1
-echo $n $nsubbox $n_thread $initmode $schmode $chunksize $randseed > inputfile
-../ex < inputfile 2> err1.out
 nsubbox=10
 echo $n $nsubbox $n_thread $initmode $schmode $chunksize $randseed > inputfile
 ../ex < inputfile 2> err2.out
 diff err1.out err2.out
 echo done nsubbox
 
-echo check chunk 
-chunksize=1
+echo check thread
+n_thread=20
 echo $n $nsubbox $n_thread $initmode $schmode $chunksize $randseed > inputfile
-../ex < inputfile 2> err1.out
+../ex < inputfile 2> err2.out
+diff err1.out err2.out
+echo done thread
+
+echo check chunk 
 chunksize=10
 echo $n $nsubbox $n_thread $initmode $schmode $chunksize $randseed > inputfile
 ../ex < inputfile 2> err2.out
